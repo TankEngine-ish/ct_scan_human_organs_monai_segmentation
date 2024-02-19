@@ -1,9 +1,6 @@
-# Multiple_Human_Organs_Segmentation
-
-
 ## Overview
 
-The organ.ipynb notebook is a Python script designed for processing and analyzing medical imaging data. It uses a variety of packages to load, transform, and visualize this data, with a particular focus on DICOM files, which are a standard format for medical imaging data.
+The organ.ipynb notebook is a Python script designed for processing and analyzing medical imaging data. It uses a variety of packages to load, transform, and visualize this data, with a particular focus on DICOM files, which are a standard format for medical imaging data. Probably the most important element of this project is the MONAI framework which provides a robust set of tools in AI development for healthcare researchers, with an immediate focus on medical imaging.
 
 Image segmentation has become a key process for the delineation of certain anatomical structures and other regions to assist and aid physicians in surgery, biopsies, and other clinical tests.
 
@@ -38,4 +35,8 @@ To install the required packages, refer to my requirements.txt file.
 
 ## Usage
 
-To use this notebook, open it in Jupyter Notebook and run the cells in order. The notebook includes comments and markdown cells that explain what each part of the code does.
+To use this notebook, open it in Jupyter Notebook and run the cells in order. The notebook includes comments and markdown cells that explain what each part of the code does. Once you have decided which CT image you'd want to use from the TCIA or any other public library you can go ahead and follow the steps in the notebook. I've downloaded a whole body CT scan which is in my Data folder.
+
+This is the result:
+
+
