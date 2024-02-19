@@ -1,9 +1,0 @@
-os-win
-numpy
-torch
-pydicom
-matplotlib
-tciaclient
-monai
-rt-utils
-scipy
