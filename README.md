@@ -4,8 +4,14 @@
 ## Overview
 
 The organ.ipynb notebook is a Python script designed for processing and analyzing medical imaging data. It uses a variety of packages to load, transform, and visualize this data, with a particular focus on DICOM files, which are a standard format for medical imaging data.
+
 Image segmentation has become a key process for the delineation of certain anatomical structures and other regions to assist and aid physicians in surgery, biopsies, and other clinical tests.
 
+The image below is from a detailed whole brain segmentation. It is an essential quantitative technique in medical image analysis, which provides a non-invasive way of measuring brain regions from a clinical acquired structural magnetic resonance imaging (it's not just CT imaging). 
+
+![brain_MRI](<assets/Brain Segmentation.png>)
+
+Credit to:  Xin Yu (xin.yu@vanderbilt.edu) and Yinchi Zhou (yinchi.zhou@vanderbilt.edu) | Yucheng Tang (yuchengt@nvidia.com) 
 
 ## Dependencies
 
