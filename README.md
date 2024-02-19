@@ -37,6 +37,7 @@ To install the required packages, refer to my requirements.txt file.
 
 To use this notebook, open it in Jupyter Notebook and run the cells in order. The notebook includes comments and markdown cells that explain what each part of the code does. Once you have decided which CT image you'd want to use from the TCIA or any other public library you can go ahead and follow the steps in the notebook. I've downloaded a whole body CT scan which is in my Data folder.
 
-This is the result:
+# This is the final result:
 
+![alt text](assets/31231231.png)
 
