@@ -39,5 +39,5 @@ To use this notebook, open it in Jupyter Notebook and run the cells in order. Th
 
 # This is the final result:
 
-![alt text](<assets/31231231.png>)
+![alt text](assets/final_result.png)
 
