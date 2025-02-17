@@ -1,8 +1,23 @@
 ## Overview
 
-The organ.ipynb notebook is a Python script designed for processing and analyzing medical imaging data. It uses a variety of packages to load, transform, and visualize this data, with a particular focus on DICOM files, which are a standard format for medical imaging data. Probably the most important element of this project is the MONAI framework which provides a robust set of tools in AI development for healthcare researchers, with an immediate focus on medical imaging.
+This project demonstrates how to download a CT scan from The Cancer Imaging Archive (TCIA), load it in Python using MONAI, and then apply a pre-trained AI model to automatically segment multiple organs (e.g., liver, lungs, kidneys, bones, etc.). The approach demonstrates:
 
-Image segmentation has become a key process for the delineation of certain anatomical structures and other regions to assist and aid physicians in surgery, biopsies, and other clinical tests.
+# Why Organ Segmentation Matters
+
+Typically, a radiation oncologist or medical physicist might have manually contoured organs slice-by-slice, but AI-based approaches can automate and accelerate this process.
+
+# How to Download Medical Data
+
+We use tcia_utils to fetch a large CT volume (hundreds of megabytes) directly from TCIA.
+
+# How to Use MONAI
+
+MONAI is a PyTorch-based framework specifically for medical imaging: it provides transforms for loading DICOM, reorienting images, normalizing intensities, cropping, sliding-window inference, and more.
+
+# Model Inference & Post-processing
+Once the 3D CT is loaded, we run a pre-trained multi-organ segmentation model (the “wholeBody_ct_segmentation” from older versions of the MONAI Model Zoo or a local copy if the model is no longer hosted). We show how to obtain a labeled 3D mask, visualize it, and compute organ volumes.
+
+The organ.ipynb notebook is a Python script designed for processing and analyzing medical imaging data. It uses a variety of packages to load, transform, and visualize this data, with a particular focus on DICOM files from CT scans (DICOMs from MRIs are quite different than CTs), which are a standard format for medical imaging data. 
 
 The image below is from a detailed whole brain segmentation. It is an essential quantitative technique in medical image analysis, which provides a non-invasive way of measuring brain regions from a clinical acquired structural magnetic resonance imaging (it's not just CT imaging). 
 
@@ -10,34 +25,19 @@ The image below is from a detailed whole brain segmentation. It is an essential 
 
 Credit to:  Xin Yu (xin.yu@vanderbilt.edu) and Yinchi Zhou (yinchi.zhou@vanderbilt.edu) | Yucheng Tang (yuchengt@nvidia.com) 
 
-## Dependencies
-
-This notebook requires the following Python packages:
-
-* os
-* numpy
-* torch
-* pydicom: A Python package specifically for parsing and manipulating DICOM files.
-* matplotlib: 
-* tcia_utils: A custom module for interacting with The Cancer Imaging Archive (TCIA).
-* monai: A PyTorch-based framework providing tools and components to build and train neural networks for medical imaging tasks.
-* rt_utils: A utility for handling RT Dose, RT Structure Set, and RT Plan DICOM files.
-* scipy: A Python library used for scientific and technical computing.
 
 
-## Python Version
+## Commons Issues You Might Encounter
 
-This notebook requires Python 3.9.0. Some of the dependencies do not yet support Python 3.10, so it's important to use Python 3.9.0 to avoid compatibility issues. It took me one whole day to find the proper Python version so you don't need to.
+- Missing or Corrupted DICOM: Remove non-DICOM files from the folder of your downloaded CT images or pass only .dcm slices to LoadImage.
+- “Kernel does not exist”: Means Jupyter was referencing an old kernel ID. Close existing notebooks, re-launch Jupyter from venv, or pick the correct kernel in the notebook UI.
+- High Memory Usage: If you only have ~8 GB RAM, try a smaller CT dataset or reduce resolution. The model_lowres.pt is friendlier than model_final.pt.
+- 404 or Missing Model: The wholeBody_ct_segmentation model might not be on NGC anymore. Manually clone from the MONAI Model Zoo dev branch. Also, you can use another trained model from monai's github page.
+- No GPU: The code can run on CPU, though inference is slower. Make sure you remove or override lines in inference.json specifying device: cuda.
 
-## Installation
+## Example Final Product:
 
-To install the required packages, refer to my requirements.txt file.
+In the image below you can detect plenty of segmented structures from the abdominal area.
+There's the liver in brown, the spleen in dark red, the stomach in light blue, the gallbladder in green, the pancreas in yellow and the portal vein in navy blue.
 
-## Usage
-
-To use this notebook, open it in Jupyter Notebook and run the cells in order. The notebook includes comments and markdown cells that explain what each part of the code does. Once you have decided which CT image you'd want to use from the TCIA or any other public library you can go ahead and follow the steps in the notebook. I've downloaded a whole body CT scan which is in my Data folder.
-
-# This is the final result:
-
-![alt text](assets/final_result.png)
-
+![alt text](assets/organs.png)
