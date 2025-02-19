@@ -30,10 +30,10 @@ Credit to:  Xin Yu (xin.yu@vanderbilt.edu) and Yinchi Zhou (yinchi.zhou@vanderbi
 # Commons Issues You Might Encounter
 
 - Missing or Corrupted DICOM: Remove non-DICOM files from the folder of your downloaded CT images or pass only .dcm slices to LoadImage.
+- The Windows-only pywin32 package in the requirements.txt will brake your installation if it's being set-up on a UNIX machine. Make sure to delete it ot comment it out before installing the dependencies inside.
 - “Kernel does not exist”: Means Jupyter was referencing an old kernel ID. Close existing notebooks, re-launch Jupyter from venv, or pick the correct kernel in the notebook UI.
 - High Memory Usage: If you only have ~8 GB RAM, try a smaller CT dataset or reduce resolution. The model_lowres.pt is friendlier than model_final.pt.
 - 404 or Missing Model: The wholeBody_ct_segmentation model might not be on NGC anymore. Manually clone from the MONAI Model Zoo dev branch. Also, you can use another trained model from monai's github page.
-- No GPU: The code can run on CPU, though inference is slower. Make sure you remove or override lines in inference.json specifying device: cuda.
 
 # Finalized Image
 
