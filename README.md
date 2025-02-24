@@ -27,7 +27,7 @@ Credit to:  Xin Yu (xin.yu@vanderbilt.edu) and Yinchi Zhou (yinchi.zhou@vanderbi
 
 
 
-# Commons Issues You Might Encounter
+# Common Issues You Might Encounter
 
 - Missing or Corrupted DICOM: Remove non-DICOM files from the folder of your downloaded CT images or pass only .dcm slices to LoadImage.
 - The Windows-only pywin32 package in the requirements.txt will brake your installation if it's being set-up on a UNIX machine. Make sure to delete it ot comment it out before installing the dependencies inside.
