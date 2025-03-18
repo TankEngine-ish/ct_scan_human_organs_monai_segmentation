@@ -61,7 +61,7 @@ class OrganSegmenter:
             logger.info(f"Model {self.model_name} already exists.")
     
     def _get_preprocessing_pipeline(self):
-        # Create enhanced preprocessing pipeline for handling variable inputs
+        # preprocessing pipeline for handling variable inputs
         enhanced_preprocessing = Compose([
             LoadImaged(keys="image", image_only=True),
             EnsureChannelFirstd(keys="image"),
