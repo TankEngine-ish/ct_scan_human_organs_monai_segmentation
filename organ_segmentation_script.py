@@ -1,3 +1,114 @@
+import os
+import numpy as np
+import torch
+import pydicom
+import matplotlib.pyplot as plt
+from tcia_utils import nbia
+from monai.bundle import ConfigParser, download
+from monai.transforms import (
+    LoadImage, LoadImaged, Orientation, Orientationd, 
+    EnsureChannelFirst, EnsureChannelFirstd, Compose,
+    Spacingd, ScaleIntensityRanged, CropForegroundd
+)
+from rt_utils import RTStructBuilder
+from scipy.ndimage import label, measurements
+import json
+import glob
+import logging
+from pathlib import Path
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+class OrganSegmenter:
+    def __init__(self, data_dir, model_name="wholeBody_ct_segmentation"):
+        self.data_dir = data_dir
+        self.model_name = model_name
+        
+        os.makedirs(data_dir, exist_ok=True)
+        
+        self.download_model()
+        
+        self.model_dir = os.path.join(data_dir, model_name)
+        self.model_path = os.path.join(self.model_dir, 'models', 'model_lowres.pt')
+        self.config_path = os.path.join(self.model_dir, 'configs', 'inference.json')
+        
+        self.config = ConfigParser()
+        self.config.read_config(self.config_path)
+        
+        self.preprocessing = self._get_preprocessing_pipeline()
+        self.model = self._load_model()
+        self.inferer = self.config.get_parsed_content("inferer")
+        
+        self._modify_postprocessing_config()
+        self.postprocessing = self.config.get_parsed_content("postprocessing")
+        
+        # Mapping of organ indices to names
+        self.organ_indices = {
+            1: "spleen", 2: "right_kidney", 3: "left_kidney", 4: "gallbladder",
+            5: "esophagus", 6: "liver", 7: "stomach", 8: "aorta",
+            9: "inferior_vena_cava", 10: "portal_vein_and_splenic_vein",
+            11: "pancreas", 12: "right_adrenal_gland", 13: "left_adrenal_gland",
+            14: "duodenum", 15: "bladder", 16: "prostate/uterus"
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #!/usr/bin/env python
 # coding: utf-8
 
