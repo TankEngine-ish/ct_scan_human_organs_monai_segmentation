@@ -43,7 +43,7 @@ class OrganSegmenter:
         self._modify_postprocessing_config()
         self.postprocessing = self.config.get_parsed_content("postprocessing")
         
-        # Mapping of organ indices to names
+        # mapping of organ indices to specifc organs
         self.organ_indices = {
             1: "spleen", 2: "right_kidney", 3: "left_kidney", 4: "gallbladder",
             5: "esophagus", 6: "liver", 7: "stomach", 8: "aorta",
