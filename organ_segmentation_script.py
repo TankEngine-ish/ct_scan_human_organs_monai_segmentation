@@ -52,6 +52,67 @@ class OrganSegmenter:
             14: "duodenum", 15: "bladder", 16: "prostate/uterus"
         }
 
+    def download_model(self):
+        if not os.path.exists(os.path.join(self.data_dir, self.model_name)):
+            logger.info(f"Downloading {self.model_name}...")
+            download(name=self.model_name, bundle_dir=self.data_dir)
+            logger.info("Download complete.")
+        else:
+            logger.info(f"Model {self.model_name} already exists.")
+    
+    def _get_preprocessing_pipeline(self):
+        # Create enhanced preprocessing pipeline for handling variable inputs
+        enhanced_preprocessing = Compose([
+            LoadImaged(keys="image", image_only=True),
+            EnsureChannelFirstd(keys="image"),
+            Orientationd(keys="image", axcodes="LPS"),
+            Spacingd(keys="image", pixdim=(1.5, 1.5, 1.5), mode="bilinear"),
+            ScaleIntensityRanged(keys="image", a_min=-1000, a_max=1000, b_min=0, b_max=1, clip=True),
+            CropForegroundd(keys="image", source_key="image", select_fn=lambda x: x > 0.05),
+        ])
+        
+        return enhanced_preprocessing
+    
+    def _modify_postprocessing_config(self):
+        try:
+            postprocessing_list = self.config["postprocessing"]
+            modified_list = [item for item in postprocessing_list 
+                            if "SaveImaged" not in str(item)]
+            self.config["postprocessing"] = modified_list
+            logger.info("Removed SaveImaged from postprocessing pipeline.")
+        except Exception as e:
+            logger.warning(f"Could not modify postprocessing config: {e}")
+    
+    def _load_model(self):
+        model = self.config.get_parsed_content("network")
+        model.load_state_dict(torch.load(self.model_path))
+        model.eval()
+        return model
+    
+    def segment_from_folder(self, ct_folder):
+        logger.info(f"Processing CT folder: {ct_folder}")
+        
+        try:
+            data = self.preprocessing({'image': ct_folder})
+            
+            with torch.no_grad():
+                data['pred'] = self.inferer(data['image'].unsqueeze(0), network=self.model)
+            
+            data['pred'] = data['pred'][0]
+            data['image'] = data['image'][0]
+            
+            data = self.postprocessing(data)
+            
+            segmentation = data['pred'][0]
+            segmentation = torch.flip(segmentation, dims=[2])
+            segmentation = segmentation.cpu().numpy()
+            
+            return data['image'][0].cpu().numpy(), segmentation
+            
+        except Exception as e:
+            logger.error(f"Error in segmentation: {e}")
+            raise
+
 
 
 
